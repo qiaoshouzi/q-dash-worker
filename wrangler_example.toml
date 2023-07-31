@@ -1,0 +1,20 @@
+name = "q-dash-worker"
+main = "src/index.ts"
+compatibility_date = "2023-06-04"
+workers_dev = false
+
+[triggers]
+crons = ["*/30 * * * *"]
+
+[[r2_buckets]]
+binding = "R2"
+bucket_name = ""
+preview_bucket_name = ""
+
+[[d1_databases]]
+binding = "DB"
+database_name = ""
+database_id = ""
+
+[vars]
+ua = ""

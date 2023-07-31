@@ -1,0 +1,17 @@
+{
+  "name": "q-dash-worker",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "yarn@3.6.0",
+  "scripts": {
+    "dev": "cross-env NO_D1_WARNING=true wrangler dev --remote --test-scheduled",
+    "deploy": "cross-env NO_D1_WARNING=true wrangler deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20230724.0",
+    "cross-env": "^7.0.3",
+    "npm-check-updates": "^16.10.17",
+    "typescript": "^5.1.6",
+    "wrangler": "3.4.0"
+  }
+}
