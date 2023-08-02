@@ -6,6 +6,8 @@ import { addAnime, deleteAnime, getAnime } from "./api/anime";
 import { BiliBiliLogin, getBiliBiliLoginQRCode } from "./api/login-bilibili";
 import { postPin } from "./api/pin";
 import setUpdateSwitch from "./api/setUpdateSwitch";
+import { deleteTodo, getTodo, postTodo } from "./api/todo";
+import { deleteTodoTemplate, getTodoTemplate, postTodoTemplate } from "./api/todo/template";
 
 export interface Env {
   R2: R2Bucket;
@@ -82,6 +84,16 @@ export default {
         if (request.method === "GET") return await getAnime(env);
         else if (request.method === "POST") return await addAnime(env, body);
         else if (request.method === "DELETE") return await deleteAnime(env, url);
+      }
+      if (pathname === "/api/todo") {
+        if (request.method === "GET") return await getTodo(env);
+        else if (request.method === "POST") return await postTodo(env, body);
+        else if (request.method === "DELETE") return await deleteTodo(env, url);
+      }
+      if (pathname === "/api/todo/template") {
+        if (request.method === "GET") return await getTodoTemplate(env);
+        else if (request.method === "POST") return await postTodoTemplate(env, body);
+        else if (request.method === "DELETE") return await deleteTodoTemplate(env, url);
       }
 
       return new Response(null, { status: 404 });
