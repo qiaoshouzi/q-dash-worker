@@ -1,7 +1,7 @@
 import { addTasksToDB, processNewDynamicData, processTasks } from "./scheduled";
 import { FetchCount } from "./utils";
 
-import { getAllDynamicData, getConfig } from "./api";
+import { getAllDynamicData, getConfig, deleteDynamic } from "./api";
 import { addAnime, deleteAnime, getAnime } from "./api/anime";
 import { BiliBiliLogin, getBiliBiliLoginQRCode } from "./api/login-bilibili";
 import { postPin } from "./api/pin";
@@ -62,6 +62,8 @@ export default {
 
       if (pathname === "/api/getAllDynamicData" && request.method === "GET") {
         return await getAllDynamicData(env);
+      } else if (pathname === "/api/deleteDynamic" && request.method === "GET") {
+        return await deleteDynamic(env, url);
       } else if (pathname === "/api/getConfig" && request.method === "GET") {
         return await getConfig(env);
       } else if (pathname === "/api/setUpdateSwitch" && request.method === "POST") {
