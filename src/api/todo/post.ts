@@ -13,16 +13,17 @@ export const postTodo = async (env: Env, body: { [key: string]: any }): Promise<
 
   if (id === -1) {
     // 新建
-    try { 
+    try {
       await env.DB.prepare("INSERT INTO todo (title, list) VALUES (?, ?)").bind(title, JSON.stringify(list)).run();
       return new Response(JSON.stringify({
         code: 200,
         message: "新建待办成功",
       }));
     } catch (e: any) {
+      console.error(`DB Error: ${e.message}`);
       return new Response(JSON.stringify({
         code: 500,
-        message: `新建待办失败: db throw error: ${e.message}`,
+        message: `DB Error: ${e.message}`,
       }));
     }
   } else {
@@ -34,9 +35,10 @@ export const postTodo = async (env: Env, body: { [key: string]: any }): Promise<
         message: "更新待办成功",
       }));
     } catch (e: any) {
+      console.error(`DB Error: ${e.message}`);
       return new Response(JSON.stringify({
         code: 500,
-        message: `更新待办失败: db throw error: ${e.message}`,
+        message: `DB Error: ${e.message}`,
       }));
     }
   }

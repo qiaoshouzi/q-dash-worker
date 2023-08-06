@@ -1,7 +1,7 @@
 import type { Env } from "../..";
 import { getQRCodeJSON } from "./get-qrcode";
 
-export default async (env: Env, url: URL): Promise<Response> => {
+export const BiliBiliLogin = async (env: Env, url: URL): Promise<Response> => {
   const qrcode_key = url.searchParams.get("qrcode_key");
   if (typeof qrcode_key !== "string" || qrcode_key.length !== 32) return new Response(JSON.stringify({
     code: 400,
@@ -46,7 +46,7 @@ export default async (env: Env, url: URL): Promise<Response> => {
           cookie: cookies.join("; "),
         })).run();
       } catch (e: any) {
-        throw `Save bilibili-login Error: ${e.message}`;
+        throw `Save bilibili-login Error: DB Error: ${e.message}`;
       }
       return new Response(JSON.stringify({
         code: 200,

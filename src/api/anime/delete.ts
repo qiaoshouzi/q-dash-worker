@@ -1,6 +1,6 @@
 import type { Env } from "../..";
 
-export default async (env: Env, url: URL): Promise<Response> => {
+export const deleteAnime = async (env: Env, url: URL): Promise<Response> => {
   const animeID = url.searchParams.get("id");
   if (animeID === null || !/^\d+$/.test(animeID)) return new Response(JSON.stringify({
     code: 400,
@@ -11,13 +11,13 @@ export default async (env: Env, url: URL): Promise<Response> => {
     await env.DB.prepare("DELETE FROM anime WHERE id = ?").bind(Number(animeID)).run();
     return new Response(JSON.stringify({
       code: 200,
-      message: "",
+      message: "删除成功",
     }));
   } catch (e: any) {
-    console.error(`DB throw Error: ${e.message}`);
+    console.error(`DB Error: ${e.message}`);
     return new Response(JSON.stringify({
       code: 500,
-      message: `DB throw Error: ${e.message}`,
+      message: `DB Error: ${e.message}`,
     }));
   }
 };

@@ -19,9 +19,10 @@ export const postTodoTemplate = async (env: Env, body: { [key: string]: any }): 
         message: "新建 Todo模板 成功",
       }));
     } catch (e: any) {
+      console.error(`DB Error: ${e.message}`);
       return new Response(JSON.stringify({
         code: 500,
-        message: `新建 Todo模板 失败: db throw error: ${e.message}`,
+        message: `DB Error: ${e.message}`,
       }));
     }
   } else {
@@ -34,9 +35,10 @@ export const postTodoTemplate = async (env: Env, body: { [key: string]: any }): 
         message: "更新 Todo模板 成功",
       }));
     } catch (e: any) {
+      console.error(`DB Error: ${e.message}`);
       return new Response(JSON.stringify({
         code: 500,
-        message: `更新 Todo模板 失败: db throw error: ${e.message}`,
+        message: `DB Error: ${e.message}`,
       }));
     }
   }

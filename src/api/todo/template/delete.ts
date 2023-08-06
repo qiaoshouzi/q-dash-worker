@@ -14,9 +14,10 @@ export const deleteTodoTemplate = async (env: Env, url: URL): Promise<Response> 
       message: "删除 Todo模板 成功",
     }));
   } catch (e: any) {
+    console.error(`DB Error: ${e.message}`);
     return new Response(JSON.stringify({
       code: 500,
-      message: `删除 Todo模板 错误: db throw error: ${e.message}`,
+      message: `DB Error: ${e.message}`,
     }));
   }
 };

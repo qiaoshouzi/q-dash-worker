@@ -1,5 +1,3 @@
-import addAnime from "./add";
-import deleteAnime from "./delete";
-import getAnime from "./get";
-
-export { addAnime, deleteAnime, getAnime };
+export { addAnime } from "./add";
+export { deleteAnime } from "./delete";
+export { getAnime } from "./get";

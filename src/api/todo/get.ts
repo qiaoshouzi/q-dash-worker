@@ -1,20 +1,15 @@
 import type { Env } from "../..";
 
 export const getTodo = async (env: Env): Promise<Response> => {
-  const result = await env.DB.prepare("SELECT * FROM todo").all<{ id: number; title: string; list: string }>().catch((e) => {
-    console.error(`get todo error: db throw error: ${e.message}`);
-    return {
-      success: false,
-      error: `get todo error: db throw error: ${e.message}`,
-    } as {
-      success: false;
-      error: string;
-    };
-  });
-  if (result.success === false) {
+  const result = await env.DB
+    .prepare("SELECT * FROM todo")
+    .all<{ id: number; title: string; list: string }>()
+    .catch((e) => `DB Error: ${e.message}`);
+  if (typeof result === "string") {
+    console.error(result);
     return new Response(JSON.stringify({
       code: 500,
-      message: result.error,
+      message: result,
     }));
   } else {
     return new Response(JSON.stringify({

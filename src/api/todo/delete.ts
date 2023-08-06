@@ -14,9 +14,10 @@ export const deleteTodo = async (env: Env, url: URL): Promise<Response> => {
       message: "删除待办成功",
     }));
   } catch (e: any) {
+    console.error(`DB Error: ${e.message}`);
     return new Response(JSON.stringify({
       code: 500,
-      message: `删除待办错误: db throw error: ${e.message}`,
+      message: `DB Error: ${e.message}`,
     }));
   }
 };

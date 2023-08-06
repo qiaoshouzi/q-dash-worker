@@ -1,4 +1,4 @@
-import { Env } from "..";
+import { Env } from "../..";
 
 export const deleteDynamic = async (env: Env, url: URL): Promise<Response> => {
   const scope = String(url.searchParams.get("scope") ?? "");
@@ -14,9 +14,10 @@ export const deleteDynamic = async (env: Env, url: URL): Promise<Response> => {
       message: "删除成功",
     }));
   } catch (e: any) {
+    console.error(`DB Error: ${e.message}`);
     return new Response(JSON.stringify({
       code: 500,
-      message: `删除失败: DB throw error: ${e.message}`,
+      message: `DB Error: ${e.message}`,
     }));
   }
 };

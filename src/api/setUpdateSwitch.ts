@@ -1,6 +1,6 @@
 import type { Env } from "..";
 
-export default async (env: Env, body: { [key: string]: any }): Promise<Response> => {
+export const setUpdateSwitch = async (env: Env, body: { [key: string]: any }): Promise<Response> => {
   const status: boolean | undefined = (() => {
     const t = body.status;
     if (t === "true" || t === true) return true;
@@ -19,9 +19,10 @@ export default async (env: Env, body: { [key: string]: any }): Promise<Response>
       message: "",
     }));
   } catch (e: any) {
+    console.error(`DB Error: ${e.message}`);
     return new Response(JSON.stringify({
       code: 500,
-      message: e.message,
+      message: `DB Error: ${e.message}`,
     }));
   }
 };

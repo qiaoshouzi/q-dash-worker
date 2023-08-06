@@ -1,6 +1,6 @@
 import type { Env } from "../..";
 
-export default async (env: Env, body: { [key: string]: any }): Promise<Response> => {
+export const addAnime = async (env: Env, body: { [key: string]: any }): Promise<Response> => {
   const coverData = body.cover;
   const data = body.data;
   const data_json = (() => {
@@ -38,7 +38,7 @@ export default async (env: Env, body: { [key: string]: any }): Promise<Response>
       await env.R2.put(coverKey, coverData_arrayBuffer);
       return `https://assets-dash.cfm.moe/${coverKey}`;
     } catch (e) {
-      console.error(e);
+      console.error("上传图片时出现错误", e);
       return new Response(JSON.stringify({
         code: 500,
         message: `上传图片时出现错误: ${String(e)}`,
@@ -62,12 +62,13 @@ export default async (env: Env, body: { [key: string]: any }): Promise<Response>
       await env.DB.prepare(`UPDATE anime SET data = ? WHERE id = ?`).bind(newData, data_json.id).run();
     return new Response(JSON.stringify({
       code: 200,
-      message: "",
+      message: "添加成功",
     }));
   } catch (e: any) {
+    console.error(`DB Error: ${e.message}`);
     return new Response(JSON.stringify({
       code: 500,
-      message: `DB throw Error: ${e.message}`,
+      message: `DB Error: ${e.message}`,
     }));
   }
 };

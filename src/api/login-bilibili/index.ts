@@ -1,4 +1,2 @@
-import getBiliBiliLoginQRCode from "./get-qrcode";
-import BiliBiliLogin from "./login";
-
-export { BiliBiliLogin, getBiliBiliLoginQRCode };
+export { getBiliBiliLoginQRCode } from "./get-qrcode";
+export { BiliBiliLogin } from "./login";

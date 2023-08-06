@@ -1,21 +1,15 @@
 import type { Env } from "../../..";
 
 export const getTodoTemplate = async (env: Env): Promise<Response> => {
-  const result = await env.DB.prepare("SELECT * FROM todo_template")
-    .all<{ id: number; title: string; list: string }>().catch((e) => {
-      console.error(`获取 Todo Template 错误: db throw error: ${e.message}`);
-      return {
-        success: false,
-        error: `获取 Todo Template 错误: db throw error: ${e.message}`,
-      } as {
-        success: false;
-        error: string;
-      };
-    });
-  if (result.success === false) {
+  const result = await env.DB
+    .prepare("SELECT * FROM todo_template")
+    .all<{ id: number; title: string; list: string }>()
+    .catch((e) => `DB Error: ${e.message}`);
+  if (typeof result === "string") {
+    console.error(result);
     return new Response(JSON.stringify({
       code: 500,
-      message: result.error,
+      message: result,
     }));
   } else {
     return new Response(JSON.stringify({

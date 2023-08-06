@@ -41,7 +41,7 @@ export const getQRCodeJSON = async (env: Env): Promise<{
   }
 };
 
-export default async (env: Env): Promise<Response> => {
+export const getBiliBiliLoginQRCode = async (env: Env): Promise<Response> => {
   const ret = await getQRCodeJSON(env);
   return new Response(JSON.stringify(ret));
 };

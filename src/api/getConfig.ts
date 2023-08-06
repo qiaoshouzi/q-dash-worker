@@ -1,20 +1,18 @@
 import type { Env } from "..";
 
-export default async (env: Env): Promise<Response> => {
-  const result = (await env.DB.prepare("SELECT * FROM config").all().catch((e) => {
-    return {
-      success: false,
-      error: `DB throw Error: ${e.message}`,
-    };
-  })) as D1Result<{
+export const getConfig = async (env: Env): Promise<Response> => {
+  const result = await env.DB.prepare("SELECT * FROM config").all<{
     key: string;
     value: string;
-  }>;
+  }>().catch((e: any) => {
+    return `DB Error: ${e.message}`;
+  });
 
-  if (!result.success) {
+  if (typeof result === "string") {
+    console.error(result);
     return new Response(JSON.stringify({
       code: 500,
-      message: result.error,
+      message: result,
     }));
   } else {
     const data: { [key: string]: string } = {};

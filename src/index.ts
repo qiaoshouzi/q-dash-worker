@@ -1,11 +1,10 @@
 import { addTasksToDB, processNewDynamicData, processTasks } from "./scheduled";
 import { FetchCount } from "./utils";
 
-import { getAllDynamicData, getConfig, deleteDynamic } from "./api";
+import { getConfig, setUpdateSwitch } from "./api";
 import { addAnime, deleteAnime, getAnime } from "./api/anime";
+import { deleteDynamic, getAllDynamic, pinDynamic } from "./api/dynamic";
 import { BiliBiliLogin, getBiliBiliLoginQRCode } from "./api/login-bilibili";
-import { postPin } from "./api/pin";
-import setUpdateSwitch from "./api/setUpdateSwitch";
 import { deleteTodo, getTodo, postTodo } from "./api/todo";
 import { deleteTodoTemplate, getTodoTemplate, postTodoTemplate } from "./api/todo/template";
 
@@ -60,18 +59,22 @@ export default {
         return resp;
       }
 
-      if (pathname === "/api/getAllDynamicData" && request.method === "GET") {
-        return await getAllDynamicData(env);
-      } else if (pathname === "/api/deleteDynamic" && request.method === "GET") {
-        return await deleteDynamic(env, url);
-      } else if (pathname === "/api/getConfig" && request.method === "GET") {
+      if (pathname === "/api/getConfig" && request.method === "GET") {
         return await getConfig(env);
       } else if (pathname === "/api/setUpdateSwitch" && request.method === "POST") {
         return await setUpdateSwitch(env, body);
       }
-      // /api/pin
-      if (pathname === "/api/pin") {
-        if (request.method === "POST") return await postPin(env, body);
+      // /api/dynamic
+      if (pathname === "/api/dynamic") {
+        if (request.method === "GET") {
+          return await getAllDynamic(env);
+        } else if (request.method === "DELETE") {
+          return await deleteDynamic(env, url);
+        }
+      }
+      // /api/dynamic/pin
+      if (pathname === "/api/dynamic/pin" && request.method === "POST") {
+        return await pinDynamic(env, body);
       }
       // /api/login-bilibili/login
       if (pathname === "/api/login-bilibili/login" && request.method === "GET") {
