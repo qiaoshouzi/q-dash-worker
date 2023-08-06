@@ -62,7 +62,7 @@ export const addAnime = async (env: Env, body: { [key: string]: any }): Promise<
       await env.DB.prepare(`UPDATE anime SET data = ? WHERE id = ?`).bind(newData, data_json.id).run();
     return new Response(JSON.stringify({
       code: 200,
-      message: "添加成功",
+      message: data_json.id === -1 ? "添加成功" : "编辑成功",
     }));
   } catch (e: any) {
     console.error(`DB Error: ${e.message}`);
