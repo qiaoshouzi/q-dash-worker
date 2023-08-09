@@ -1,7 +1,17 @@
+import { parse as cookieParse } from "cookie";
 import { addTasksToDB, processNewDynamicData, processTasks } from "./scheduled";
-import { FetchCount } from "./utils";
+import { FetchCount, verifyToken } from "./utils";
 
 import { getConfig, setUpdateSwitch } from "./api";
+import {
+  accessLoginOptions,
+  accessLoginVerification,
+  accessRegistrationOptions,
+  accessRegistrationVerification,
+  deleteAuthenticator,
+  editAuthenticatorName,
+  getAllAuthenticator,
+} from "./api/access";
 import { addAnime, deleteAnime, getAnime } from "./api/anime";
 import { deleteDynamic, getAllDynamic, pinDynamic } from "./api/dynamic";
 import { BiliBiliLogin, getBiliBiliLoginQRCode } from "./api/login-bilibili";
@@ -14,6 +24,7 @@ export interface Env {
   // Env Variables
   ua: string;
   cookie: string;
+  jwt_secret: string;
 }
 
 export default {
@@ -23,7 +34,11 @@ export default {
     ctx: ExecutionContext,
   ): Promise<Response> {
     const url = new URL(request.url);
+    const originUrl = new URL(request.headers.get("Origin") ?? "https://test.com");
     const { pathname } = url;
+
+    if (!["dash.cfm.moe", "localhost"].includes(originUrl.hostname))
+      return new Response(null, { status: 403 });
 
     // POST 请求的 body
     const body: { [key: string]: any } = await (async () => {
@@ -52,11 +67,51 @@ export default {
         const resp = new Response(null);
         // CORS
         resp.headers.set("Access-Control-Allow-Methods", "HEAD,GET,POST,DELETE");
-        resp.headers.set("Access-Control-Allow-Credentials", "true");
         resp.headers.set("Access-Control-Allow-Headers", "*");
         resp.headers.set("Access-Control-Max-Age", "86400");
 
         return resp;
+      }
+
+      /* 无需Cookie验证 */
+      // Access Login
+      if (pathname === "/api/access/login/options" && request.method === "POST") {
+        return await accessLoginOptions(env, body);
+      } else if (pathname === "/api/access/login/verification" && request.method === "POST") {
+        return await accessLoginVerification(env, body);
+      }
+
+      /* 需要Cookie验证 */
+      // Cookie验证
+      const checkResult = await (async (): Promise<boolean> => {
+        const cookies = cookieParse(request.headers.get("cookie") ?? "");
+        const token = cookies.SESSDATA;
+        if (typeof token !== "string" || token.split(".").length !== 3) return false;
+        const tokenData = await verifyToken(env, token);
+        if (tokenData === null) return false;
+        if (tokenData.userName !== "qiaoshouzi") return false;
+        return true;
+      })();
+      if (!checkResult) return new Response(JSON.stringify({
+        code: 403,
+        message: "SESSDATA过期",
+      }));
+
+      // Access Registration
+      if (pathname === "/api/access/registration/options" && request.method === "POST") {
+        return await accessRegistrationOptions(env, body);
+      } else if (pathname === "/api/access/registration/verification" && request.method === "POST") {
+        return await accessRegistrationVerification(env, body);
+      }
+      // Access Manager Authenticator
+      if (pathname === "/api/access/authenticator") {
+        if (request.method === "GET") {
+          return await getAllAuthenticator(env);
+        } else if (request.method === "POST") {
+          return await editAuthenticatorName(env, body);
+        } else if (request.method === "DELETE") {
+          return await deleteAuthenticator(env, url);
+        }
       }
 
       if (pathname === "/api/getConfig" && request.method === "GET") {
@@ -104,7 +159,8 @@ export default {
       return new Response(null, { status: 404 });
     })();
 
-    resp.headers.set("Access-Control-Allow-Origin", "*");
+    resp.headers.set("Access-Control-Allow-Origin", originUrl.origin);
+    resp.headers.set("Access-Control-Allow-Credentials", "true");
 
     return resp;
   },
