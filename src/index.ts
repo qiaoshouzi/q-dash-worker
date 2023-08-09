@@ -25,6 +25,7 @@ export interface Env {
   ua: string;
   cookie: string;
   jwt_secret: string;
+  captcha_key: string;
 }
 
 export default {
@@ -78,7 +79,7 @@ export default {
       if (pathname === "/api/access/login/options" && request.method === "POST") {
         return await accessLoginOptions(env, body);
       } else if (pathname === "/api/access/login/verification" && request.method === "POST") {
-        return await accessLoginVerification(env, body);
+        return await accessLoginVerification(env, body, request);
       }
 
       /* 需要Cookie验证 */

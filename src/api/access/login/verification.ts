@@ -2,12 +2,17 @@ import { verifyAuthenticationResponse } from "@simplewebauthn/server";
 import type { AuthenticationResponseJSON } from "@simplewebauthn/typescript-types";
 import type { Env } from "../../..";
 import { getAuthenticator, updateAuthenticatorCounter } from "../manageAuthenticator";
-import { createToken } from "../../../utils";
+import { createToken, checkCaptcha } from "../../../utils";
 
 export const accessLoginVerification = async (
   env: Env,
   body: { [key: string]: any },
+  request: Request,
 ): Promise<Response> => {
+  // 人机校验
+  const checkCaptchaResp = await checkCaptcha(env, request, body.captchaToken, "WebAuth");
+  if (checkCaptchaResp) return checkCaptchaResp;
+
   const { userName, rpID, expectedChallenge } = body;
   const browserResponse: AuthenticationResponseJSON = body.browserResponse;
   if (
