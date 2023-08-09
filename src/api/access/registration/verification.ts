@@ -23,7 +23,7 @@ export const accessRegistrationVerification = async (
     const verification = await verifyRegistrationResponse({
       response: browserResponse,
       expectedChallenge,
-      expectedOrigin: rpID === "localhost" ? `http://${rpID}:6892` : `https://${rpID}`,
+      expectedOrigin: rpID === "localhost" ? `http://${rpID}:38920` : `https://${rpID}`,
       expectedRPID: rpID,
     });
     console.log("test");

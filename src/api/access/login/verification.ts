@@ -37,7 +37,7 @@ export const accessLoginVerification = async (
     const verification = await verifyAuthenticationResponse({
       response: browserResponse,
       expectedChallenge,
-      expectedOrigin: rpID === "localhost" ? `http://${rpID}:6892` : `https://${rpID}`,
+      expectedOrigin: rpID === "localhost" ? `http://${rpID}:38920` : `https://${rpID}`,
       expectedRPID: rpID,
       authenticator: {
         credentialID: authenticator[0].credentialID,
