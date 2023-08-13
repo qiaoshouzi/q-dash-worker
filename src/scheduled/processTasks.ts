@@ -26,67 +26,70 @@ export default async (env: Env, cookie: string, fetchCount: FetchCount) => {
         dynamicID: string;
         ts: number;
         raw: string | null;
-      } | null>().catch((e) => {
+      } | null>().catch((e): false => {
         console.error(`DB Error: SELECT task ${dynamicID}, ${e.message}`);
-        return null;
+        return false;
       }); // 从数据库获取动态信息
-      const rawInfo = await (async (): Promise<{
-        raw: string;
-        item: DynamicItem;
-        on: "db" | "r2";
-      } | undefined> => {
-        if (result !== null && result.raw !== null) return {
-          raw: result.raw,
-          item: JSON.parse(result.raw),
-          on: "db",
-        };
-        else {
-          try {
-            const result = await env.R2.get(`dynamic/${dynamicID}.json`);
-            if (result) {
-              const item = await result.json() as DynamicItem;
-              return {
-                raw: JSON.stringify(item),
-                item,
-                on: "r2",
-              };
-            }
-            else {
-              console.error(`R2 Error: get dynamic ${dynamicID} raw, result is null`);
+      if (result === false) continue;
+      else if (result) {
+        const rawInfo = await (async (): Promise<{
+          raw: string;
+          item: DynamicItem;
+          on: "db" | "r2";
+        } | undefined> => {
+          if (result.raw !== null) return {
+            raw: result.raw,
+            item: JSON.parse(result.raw),
+            on: "db",
+          };
+          else {
+            try {
+              const result = await env.R2.get(`dynamic/${dynamicID}.json`);
+              if (result) {
+                const item = await result.json() as DynamicItem;
+                return {
+                  raw: JSON.stringify(item),
+                  item,
+                  on: "r2",
+                };
+              }
+              else {
+                console.error(`R2 Error: get dynamic ${dynamicID} raw, result is null`);
+                return undefined;
+              }
+            } catch (e) {
+              console.error(`R2 Error: get dynamic ${dynamicID} raw`, e);
               return undefined;
             }
-          } catch (e) {
-            console.error(`R2 Error: get dynamic ${dynamicID} raw`, e);
-            return undefined;
+          }
+        })();
+        if (rawInfo === undefined) continue;
+        const { raw, item, on: rawOn } = rawInfo;
+        console.log(`get dynamic ${dynamicID} raw success`);
+
+        let newRaw: string = raw;
+        const assetsList = getAssets(item);
+        console.log(`dynamic ${dynamicID} has ${assetsList.length} assets need to archive`, assetsList);
+        for (const value of assetsList) {
+          if (!fetchCount.check()) break;
+          const url = await addAssets(env, cookie, value, fetchCount);
+          if (url) {
+            // 替换资源
+            newRaw = newRaw.replace(new RegExp(`"${value}"`, "g"), `"${url}"`);
+            console.log(`assets ${value} => ${url}`);
           }
         }
-      })();
-      if (rawInfo === undefined) continue;
-      const { raw, item, on: rawOn } = rawInfo;
-      console.log(`get dynamic ${dynamicID} raw success`);
 
-      let newRaw: string = raw;
-      const assetsList = getAssets(item);
-      console.log(`dynamic ${dynamicID} has ${assetsList.length} assets need to archive`, assetsList);
-      for (const value of assetsList) {
-        if (!fetchCount.check()) break;
-        const url = await addAssets(env, cookie, value, fetchCount);
-        if (url) {
-          // 替换资源
-          newRaw = newRaw.replace(new RegExp(`"${value}"`, "g"), `"${url}"`);
-          console.log(`assets ${value} => ${url}`);
+        // 更新raw
+        if (rawOn === "db") {
+          // 更新数据库
+          await env.DB.prepare("UPDATE dynamic SET raw = ? WHERE dynamicID = ?").bind(newRaw, dynamicID).run().catch((e) => { });
+        } else {
+          // 更新R2
+          await env.R2.put(`dynamic/${dynamicID}.json`, newRaw).catch((e) => { });
         }
+        console.log(`dynamic ${dynamicID} update success, rawOn: ${rawOn}`);
       }
-
-      // 更新raw
-      if (rawOn === "db") {
-        // 更新数据库
-        await env.DB.prepare("UPDATE dynamic SET raw = ? WHERE dynamicID = ?").bind(newRaw, dynamicID).run().catch((e) => { });
-      } else {
-        // 更新R2
-        await env.R2.put(`dynamic/${dynamicID}.json`, newRaw).catch((e) => { });
-      }
-      console.log(`dynamic ${dynamicID} update success, rawOn: ${rawOn}`);
 
       // 删除任务
       if (fetchCount.check()) {
