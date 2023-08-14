@@ -89,7 +89,7 @@ export const weiboSign = async (controller: ScheduledController, env: Env) => {
     // 更新
     await env.DB.prepare("UPDATE config SET value = ? WHERE key = 'weibo-sign'").bind(JSON.stringify({
       isSign: false,
-      nextSignCron: signCorns[Math.floor(Math.random() * 4)],
+      nextSignCron: signCorns[Math.floor(Math.random() * 2)],
       chID: weiboSignConfig_json.chID,
     })).run().catch((e) => {
       console.error(`Update DB Error(updateData): ${e.message}`);
