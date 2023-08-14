@@ -11,11 +11,8 @@ type CheckQRCodeRespJson = {
 };
 
 export const loginWeiboPost = async (env: Env, body: { [key: string]: any }): Promise<Response> => {
-  const { qrid, callback } = body as { qrid: string; callback: string };
-  if (!/^STK_\d+$/.test(callback)) return new Response(JSON.stringify({
-    code: 400,
-    message: "参数错误",
-  }));
+  const { qrid } = body as { qrid: string };
+  const callback = `STK_${Date.now() * 100}`;
 
   const checkQRCodeResp_json = await (async (): Promise<CheckQRCodeRespJson | Response> => {
     try {
@@ -109,16 +106,21 @@ export const loginWeiboPost = async (env: Env, body: { [key: string]: any }): Pr
   }
 
   try {
+    const nowTS = Date.now();
     await env.DB
       .prepare("UPDATE config SET value = ? WHERE key = 'weibo-login'")
       .bind(JSON.stringify({
-        ts: Date.now(),
+        ts: nowTS,
         cookie: cookie.getCookie("weibo.com"),
       }))
       .run();
     return new Response(JSON.stringify({
       code: 200,
       message: "登录成功",
+      data: {
+        type: "success",
+        ts: nowTS,
+      }
     }));
   } catch (e: any) {
     console.error(`DB Error(saveCookie): ${e.message}`);
