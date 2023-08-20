@@ -10,8 +10,8 @@ export const accessLoginVerification = async (
   request: Request,
 ): Promise<Response> => {
   // 人机校验
-  const checkCaptchaResp = await checkCaptcha(env, request, body.captchaToken, "WebAuth");
-  if (checkCaptchaResp) return checkCaptchaResp;
+  // const checkCaptchaResp = await checkCaptcha(env, request, body.captchaToken, "WebAuth");
+  // if (checkCaptchaResp) return checkCaptchaResp;
 
   const { userName, rpID, expectedChallenge } = body;
   const browserResponse: AuthenticationResponseJSON = body.browserResponse;
