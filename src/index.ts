@@ -1,5 +1,5 @@
 import { parse as cookieParse } from "cookie";
-import { addTasksToDB, processNewDynamicData, processTasks, weiboSign, weiboSignCorns } from "./scheduled";
+import { addTasksToDB, processNewDynamicData, processTasks } from "./scheduled";
 
 import { getConfig, setUpdateSwitch } from "./api";
 import {
@@ -15,7 +15,6 @@ import {
 import { addAnime, deleteAnime, getAnime } from "./api/anime";
 import { deleteDynamic, getAllDynamic, pinDynamic } from "./api/dynamic";
 import { BiliBiliLogin, getBiliBiliLoginQRCode } from "./api/login-bilibili";
-import { loginWeiboGet, loginWeiboPost } from "./api/login-weibo";
 import { deleteTodo, getTodo, postTodo } from "./api/todo";
 import { deleteTodoTemplate, getTodoTemplate, postTodoTemplate } from "./api/todo/template";
 
@@ -164,11 +163,6 @@ export default {
         else if (request.method === "POST") return await postTodoTemplate(env, body);
         else if (request.method === "DELETE") return await deleteTodoTemplate(env, url);
       }
-      // /api/login-weibo
-      if (pathname === "/api/login-weibo") {
-        if (request.method === "GET") return await loginWeiboGet(env);
-        else if (request.method === "POST") return await loginWeiboPost(env, body);
-      }
 
       return new Response(null, { status: 404 });
     })();
@@ -185,13 +179,6 @@ export default {
     ctx: ExecutionContext,
   ): Promise<void> {
     console.log("Run!");
-
-    // 微博签到
-    if (weiboSignCorns.includes(controller.cron)) {
-      console.log(`微博签到: ${controller.cron}`);
-      await weiboSign(controller, env);
-      return;
-    }
 
     try {
       const result = await env.DB.prepare("SELECT value FROM config WHERE key = 'updateSwitch'").first<{ value: string }>();
