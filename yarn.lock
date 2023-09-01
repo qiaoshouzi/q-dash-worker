@@ -280,7 +280,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hexagon/base64@npm:^1.1.25":
+"@hexagon/base64@npm:^1.1.27":
   version: 1.1.27
   resolution: "@hexagon/base64@npm:1.1.27"
   checksum: 617abb33a29ecfde5594bff90058be5e1ecf31a2550254d76eb4128c18cfe5b4eadbea20ed6907ccad5c4a8b80b22f64c1aed65b671d5257a95f7b01218879d2
@@ -394,7 +394,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/asn1-android@npm:^2.3.3":
+"@peculiar/asn1-android@npm:^2.3.6":
   version: 2.3.6
   resolution: "@peculiar/asn1-android@npm:2.3.6"
   dependencies:
@@ -405,7 +405,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/asn1-ecc@npm:^2.3.4":
+"@peculiar/asn1-ecc@npm:^2.3.6":
   version: 2.3.6
   resolution: "@peculiar/asn1-ecc@npm:2.3.6"
   dependencies:
@@ -417,7 +417,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/asn1-rsa@npm:^2.3.4":
+"@peculiar/asn1-rsa@npm:^2.3.6":
   version: 2.3.6
   resolution: "@peculiar/asn1-rsa@npm:2.3.6"
   dependencies:
@@ -429,7 +429,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/asn1-schema@npm:^2.3.3, @peculiar/asn1-schema@npm:^2.3.6":
+"@peculiar/asn1-schema@npm:^2.3.6":
   version: 2.3.6
   resolution: "@peculiar/asn1-schema@npm:2.3.6"
   dependencies:
@@ -440,7 +440,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/asn1-x509@npm:^2.3.4, @peculiar/asn1-x509@npm:^2.3.6":
+"@peculiar/asn1-x509@npm:^2.3.6":
   version: 2.3.6
   resolution: "@peculiar/asn1-x509@npm:2.3.6"
   dependencies:
@@ -524,41 +524,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@simplewebauthn/iso-webcrypto@npm:^7.4.0":
-  version: 7.4.0
-  resolution: "@simplewebauthn/iso-webcrypto@npm:7.4.0"
+"@simplewebauthn/server@npm:^8.1.0":
+  version: 8.1.0
+  resolution: "@simplewebauthn/server@npm:8.1.0"
   dependencies:
-    "@simplewebauthn/typescript-types": ^7.4.0
-    "@types/node": ^18.11.9
-  checksum: dfc22eb81ccb55a4526321464219b6984b096d91c73f7db590505afc2e33371da884bdaa0f53d59f4cf66440467a6fe9d6acccd27036a81b9dc96805d4657b27
+    "@hexagon/base64": ^1.1.27
+    "@peculiar/asn1-android": ^2.3.6
+    "@peculiar/asn1-ecc": ^2.3.6
+    "@peculiar/asn1-rsa": ^2.3.6
+    "@peculiar/asn1-schema": ^2.3.6
+    "@peculiar/asn1-x509": ^2.3.6
+    "@simplewebauthn/typescript-types": ^8.0.0
+    "@types/debug": ^4.1.8
+    cbor-x: ^1.5.2
+    cross-fetch: ^4.0.0
+    debug: ^4.3.4
+  checksum: 49f71adb70a3916d7609398a9c1fdd71af0e64f6f5ac16d59d1f033366b977bb7c2ff8a68a3182f3087c8732bcf1a08597258cac4700d736ef90a6eff3ab8a86
   languageName: node
   linkType: hard
 
-"@simplewebauthn/server@npm:^7.4.0":
-  version: 7.4.0
-  resolution: "@simplewebauthn/server@npm:7.4.0"
-  dependencies:
-    "@hexagon/base64": ^1.1.25
-    "@peculiar/asn1-android": ^2.3.3
-    "@peculiar/asn1-ecc": ^2.3.4
-    "@peculiar/asn1-rsa": ^2.3.4
-    "@peculiar/asn1-schema": ^2.3.3
-    "@peculiar/asn1-x509": ^2.3.4
-    "@simplewebauthn/iso-webcrypto": ^7.4.0
-    "@simplewebauthn/typescript-types": ^7.4.0
-    "@types/debug": ^4.1.7
-    "@types/node": ^18.11.9
-    cbor-x: ^1.4.1
-    cross-fetch: ^3.1.5
-    debug: ^4.3.2
-  checksum: 0dd76c4d3c66888fd482393e9d16f668441f66ad0a407874dd62817c5f9c58d107ed4cac3db0bfb514719a665c902524322e6c1b1d511b902c629fb204bd4115
-  languageName: node
-  linkType: hard
-
-"@simplewebauthn/typescript-types@npm:^7.4.0":
-  version: 7.4.0
-  resolution: "@simplewebauthn/typescript-types@npm:7.4.0"
-  checksum: c53fd44eaf9a905ec79f3a7956bebb275dde47079bc8a05e20cf0b5b79cd358f63f60997efcad49d468110ae6d317782becf75c338aa6c48cacd09b839a583b7
+"@simplewebauthn/typescript-types@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@simplewebauthn/typescript-types@npm:8.0.0"
+  checksum: 59b4ac9804170edbee50703428f5adcada70211117c8f458c805a4b6d4772b9ec678664dd3f00e400aee2e392c9da8e5a8c38448fb0c3d792aba535a3329bfe7
   languageName: node
   linkType: hard
 
@@ -609,7 +597,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/debug@npm:^4.1.7":
+"@types/debug@npm:^4.1.8":
   version: 4.1.8
   resolution: "@types/debug@npm:4.1.8"
   dependencies:
@@ -629,13 +617,6 @@ __metadata:
   version: 0.7.31
   resolution: "@types/ms@npm:0.7.31"
   checksum: daadd354aedde024cce6f5aa873fefe7b71b22cd0e28632a69e8b677aeb48ae8caa1c60e5919bb781df040d116b01cb4316335167a3fc0ef6a63fa3614c0f6da
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^18.11.9":
-  version: 18.17.12
-  resolution: "@types/node@npm:18.17.12"
-  checksum: 79f8bcca3067a3c529f30e172df8d14f25ab9e4cd6a05ed897a924ab1dec774e8ea172ef5c4a67ffec433d423a0c81778f17db22606d574bc83871b60aab298e
   languageName: node
   linkType: hard
 
@@ -1018,7 +999,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cbor-x@npm:^1.4.1":
+"cbor-x@npm:^1.5.2":
   version: 1.5.4
   resolution: "cbor-x@npm:1.5.4"
   dependencies:
@@ -1192,12 +1173,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-fetch@npm:^3.1.5":
-  version: 3.1.8
-  resolution: "cross-fetch@npm:3.1.8"
+"cross-fetch@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "cross-fetch@npm:4.0.0"
   dependencies:
     node-fetch: ^2.6.12
-  checksum: 78f993fa099eaaa041122ab037fe9503ecbbcb9daef234d1d2e0b9230a983f64d645d088c464e21a247b825a08dc444a6e7064adfa93536d3a9454b4745b3632
+  checksum: ecca4f37ffa0e8283e7a8a590926b66713a7ef7892757aa36c2d20ffa27b0ac5c60dcf453119c809abe5923fc0bae3702a4d896bfb406ef1077b0d0018213e24
   languageName: node
   linkType: hard
 
@@ -1228,7 +1209,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4":
+"debug@npm:4, debug@npm:^4.3.1, debug@npm:^4.3.3, debug@npm:^4.3.4":
   version: 4.3.4
   resolution: "debug@npm:4.3.4"
   dependencies:
@@ -2605,7 +2586,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"npm-check-updates@npm:^16.13.1":
+"npm-check-updates@npm:^16.13.2":
   version: 16.13.2
   resolution: "npm-check-updates@npm:16.13.2"
   dependencies:
@@ -2984,12 +2965,12 @@ __metadata:
   resolution: "q-dash-worker@workspace:."
   dependencies:
     "@cloudflare/workers-types": ^4.20230821.0
-    "@simplewebauthn/server": ^7.4.0
+    "@simplewebauthn/server": ^8.1.0
     "@types/cookie": ^0.5.1
     cookie: ^0.5.0
     cross-env: ^7.0.3
     nanoid: ^4.0.2
-    npm-check-updates: ^16.13.1
+    npm-check-updates: ^16.13.2
     typescript: ^5.2.2
     wrangler: 3.6.0
   languageName: unknown

@@ -22,7 +22,7 @@ export const accessRegistrationOptions = async (
     message: authenticators,
   }));
 
-  const options = generateRegistrationOptions({
+  const options = await generateRegistrationOptions({
     rpName: "Qiao's Dash",
     rpID,
     userID: "1",

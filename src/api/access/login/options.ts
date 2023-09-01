@@ -19,7 +19,7 @@ export const accessLoginOptions = async (
     message: authenticators,
   }));
 
-  const options = generateAuthenticationOptions({
+  const options = await generateAuthenticationOptions({
     challenge: nanoid(),
     allowCredentials: authenticators.map((value) => ({
       id: value.credentialID,
