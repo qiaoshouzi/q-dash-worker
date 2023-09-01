@@ -54,9 +54,9 @@ export default {
             // FormData
             const formData = await request.formData();
             const body: { [key: string]: any } = {};
-            for (const [key, value] of formData.entries()) {
+            formData.forEach((value, key) => {
               body[key] = value;
-            }
+            })
             return body;
           } else {
             // JSON
