@@ -12,7 +12,7 @@ export const addAnime = async (env: Env, body: { [key: string]: any }): Promise<
   })() as {
     id: number; // -1 新建 Other 编辑
     title: string; // 标题
-    type: "follow" | "repair" | "want"; // 追番 补番 想看
+    type: "follow" | "repair" | "want" | "end"; // 追番 补番 想看 完结
     startTime: string | null; // 2023.01.01
     updateTime: string | null; // 五
     ep: number; // 总集数
